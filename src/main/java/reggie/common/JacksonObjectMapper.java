@@ -39,6 +39,7 @@ public class JacksonObjectMapper extends ObjectMapper {
                 .addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)))
 
                 .addSerializer(BigInteger.class, ToStringSerializer.instance)
+                //long转String
                 .addSerializer(Long.class, ToStringSerializer.instance)
 
                 .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))

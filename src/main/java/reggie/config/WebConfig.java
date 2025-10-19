@@ -26,6 +26,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        log.info("调用自己的转换器");
         // 添加一个转换器，除自带八大转换器外，将Long装成String
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(new JacksonObjectMapper());

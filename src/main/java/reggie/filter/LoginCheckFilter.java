@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
+import reggie.common.BaseContext;
 import reggie.common.R;
 import reggie.common.ThreadLocalUtil;
 import reggie.entity.User;
@@ -36,13 +37,12 @@ public class LoginCheckFilter implements Filter {
             chain.doFilter(req,res);
             return;
         }
-        Long empId = (Long) req.getSession().getAttribute("emp");
+        Long empId = (Long) req.getSession().getAttribute("employee");
         if (empId!=null){
-            ThreadLocalUtil.setCurrentId(empId);
+            BaseContext.setThreadLocal(empId);
             chain.doFilter(req,res);
             return;
         }
-
         User user=(User) req.getSession().getAttribute("user");
         log.info("移动端用户是否登录==》"+user);
         if (user!=null){
