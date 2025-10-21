@@ -2,6 +2,8 @@ package reggie.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -47,12 +49,12 @@ public class Category implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
-    private Date createTime;
+    private LocalDate createTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty(value = "更新时间")
-    private Date updateTime;
+    private LocalDate updateTime;
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人")

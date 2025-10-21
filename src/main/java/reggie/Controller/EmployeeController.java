@@ -13,9 +13,7 @@ import reggie.entity.Employee;
 import reggie.service.EmployeeService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Slf4j
 @RestController
@@ -83,12 +81,16 @@ public class EmployeeController {
         return R.success(pageInfo);
     }
     @PutMapping
-    public R<String> update(@RequestBody Employee employee,HttpServletRequest request){
-        employee.setStatus(employee.getStatus().equals(0l)?1:0);
-        log.info(employee.getStatus()+"9999999999");
-        employee.setUpdateTime(LocalDateTime.now());
+    //HttpServletRequest request
+    public R<String> update(@RequestBody Employee employee){
+        log.info(employee+"");
+        //employee.setStatus(employee.getStatus().equals(0)?1:0);
+        /*
+        *  employee.setUpdateTime(LocalDateTime.now());
         Long id = (Long) request.getSession().getAttribute("employee");
         employee.setUpdateUser(id);
+        *
+        * */
         employeeService.updateById(employee);
         return R.success("修改成功");
     }

@@ -1,11 +1,10 @@
-package reggie.config;
+package reggie.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import reggie.common.R;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
@@ -15,7 +14,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 @Slf4j
 public class GolbalEXceptionHandler {
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public R<String> eXceptionHandler(SQLIntegrityConstraintViolationException exception) {
+    public R<String> ExceptionHandler(SQLIntegrityConstraintViolationException exception) {
         log.error(exception.getMessage());
         if(exception.getMessage().contains("Duplicate entry")){
             String[] split = exception.getMessage().split(" ");
@@ -23,5 +22,10 @@ public class GolbalEXceptionHandler {
             return R.error(msg);
         }
         return R.error("数据库异常");
+    }
+    @ExceptionHandler(CustomException.class)
+    public R<String> ExceptionHandler(CustomException exception) {
+        log.error(exception.getMessage());
+        return R.error(exception.getMessage());
     }
 }

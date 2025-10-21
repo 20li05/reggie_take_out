@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -18,8 +19,8 @@ public class MyMetaObjetHander implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         log.info("公共字段自动填充-insertFill");
 
-        metaObject.setValue("createTime", LocalDateTime.now());
-        metaObject.setValue("updateTime", LocalDateTime.now());
+        metaObject.setValue("createTime", LocalDate.now());
+        metaObject.setValue("updateTime", LocalDate.now());
         log.info(BaseContext.getThreadLocal()+"");
         metaObject.setValue("createUser",BaseContext.getThreadLocal());
         metaObject.setValue("updateUser",BaseContext.getThreadLocal());
@@ -28,7 +29,7 @@ public class MyMetaObjetHander implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("公共字段自动填充-updateFill");
-        metaObject.setValue("updateTime", LocalDateTime.now());
+        metaObject.setValue("updateTime", LocalDate.now());
         metaObject.setValue("updateUser",BaseContext.getThreadLocal());
     }
 }
