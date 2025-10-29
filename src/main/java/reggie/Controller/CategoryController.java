@@ -10,10 +10,11 @@ import reggie.entity.Category;
 import reggie.service.CategoryService;
 import reggie.service.DishFlavorService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")  // 可选的，但推荐
+@RequestMapping("/category")
 @Slf4j
 public class CategoryController {
     @Autowired
@@ -49,10 +50,17 @@ public class CategoryController {
 
     @GetMapping("/list")
     public  R<List<Category>> list(Category category){
-        LambdaQueryWrapper<Category> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(category.getType()!=null,Category::getType,category.getType());
-        queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
-        List<Category> list=categoryService.list(queryWrapper);
+        List<Category> list=new ArrayList<>();
+        if (category!=null){
+            LambdaQueryWrapper<Category> queryWrapper=new LambdaQueryWrapper<>();
+            queryWrapper.eq(category.getType()!=null,Category::getType,category.getType());
+            queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+            list=categoryService.list(queryWrapper);
+        }else {
+            list = categoryService.list();
+            log.info("http://localhost:8080/category/list");
+        }
+
         return R.success(list);
     }
 }

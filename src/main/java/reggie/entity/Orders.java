@@ -2,6 +2,8 @@ package reggie.entity;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
@@ -47,11 +49,11 @@ public class Orders implements Serializable {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "下单时间")
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "结账时间")
-    private Date checkoutTime;
+    private LocalDateTime checkoutTime;
 
     @ApiModelProperty(value = "支付方式 1微信,2支付宝")
     private Integer payMethod;

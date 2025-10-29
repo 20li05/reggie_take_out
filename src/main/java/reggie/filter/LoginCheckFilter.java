@@ -31,7 +31,8 @@ public class LoginCheckFilter implements Filter {
                 "/backend/**",
                 "/front/**",
                 "/user/sendMsg",
-                "/user/login"
+                "/user/login",
+                "/user/code"
         };
         if (isCheckUrl(urls,url)){
             chain.doFilter(req,res);
@@ -43,10 +44,10 @@ public class LoginCheckFilter implements Filter {
             chain.doFilter(req,res);
             return;
         }
-        User user=(User) req.getSession().getAttribute("user");
-        log.info("移动端用户是否登录==》"+user);
-        if (user!=null){
-            ThreadLocalUtil.setCurrentId(user.getId());
+        Long userid=(Long) req.getSession().getAttribute("user");
+        log.info("移动端用户是否登录==》"+userid);
+        if (userid!=null){
+            BaseContext.setThreadLocal(userid);
             chain.doFilter(req,res);
             return;
         }

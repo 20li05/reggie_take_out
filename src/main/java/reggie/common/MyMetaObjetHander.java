@@ -19,17 +19,34 @@ public class MyMetaObjetHander implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         log.info("公共字段自动填充-insertFill");
 
-        metaObject.setValue("createTime", LocalDate.now());
-        metaObject.setValue("updateTime", LocalDate.now());
+        // 检查字段是否存在再设置值
+        if (metaObject.hasSetter("createTime")) {
+            metaObject.setValue("createTime", LocalDateTime.now());
+        }
+        if (metaObject.hasSetter("updateTime")) {
+            metaObject.setValue("updateTime", LocalDateTime.now());
+        }
+
         log.info(BaseContext.getThreadLocal()+"");
-        metaObject.setValue("createUser",BaseContext.getThreadLocal());
-        metaObject.setValue("updateUser",BaseContext.getThreadLocal());
+
+        if (metaObject.hasSetter("createUser")) {
+            metaObject.setValue("createUser", BaseContext.getThreadLocal());
+        }
+        if (metaObject.hasSetter("updateUser")) {
+            metaObject.setValue("updateUser", BaseContext.getThreadLocal());
+        }
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("公共字段自动填充-updateFill");
-        metaObject.setValue("updateTime", LocalDate.now());
-        metaObject.setValue("updateUser",BaseContext.getThreadLocal());
+
+        // 检查字段是否存在再设置值
+        if (metaObject.hasSetter("updateTime")) {
+            metaObject.setValue("updateTime", LocalDateTime.now());
+        }
+        if (metaObject.hasSetter("updateUser")) {
+            metaObject.setValue("updateUser", BaseContext.getThreadLocal());
+        }
     }
 }

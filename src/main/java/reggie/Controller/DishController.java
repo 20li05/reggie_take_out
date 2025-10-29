@@ -10,6 +10,7 @@ import reggie.common.R;
 import reggie.dto.DishDto;
 import reggie.entity.Category;
 import reggie.entity.Dish;
+import reggie.entity.DishFlavor;
 import reggie.service.CategoryService;
 import reggie.service.DishFlavorService;
 import reggie.service.DishService;
@@ -39,7 +40,7 @@ public class DishController {
     public R<Page<DishDto>> page(int page, int pageSize, String name) {
         Page<Dish> pageInfo = new Page<>(page, pageSize);
         LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
-        //wrapper.like(!name.isEmpty(), Dish::getName, name);
+        wrapper.like(!name.isEmpty(), Dish::getName, name);
         wrapper.orderByDesc(Dish::getUpdateTime);
         dishService.page(pageInfo, wrapper);
         Page<DishDto> dtoInfo = new Page<>(page, page);
@@ -60,5 +61,41 @@ public class DishController {
 
         dtoInfo.setRecords(list);
         return R.success(dtoInfo);
+    }
+
+    @GetMapping("/{id}")
+    public R<DishDto> byId(@PathVariable Long id){
+        return  R.success(dishService.getByIdWithFlavor(id));
+    }
+
+    @PutMapping
+    public R<String> byId(@RequestBody DishDto dto){
+        dishService.updateWithFlavor(dto);
+        return R.success("保存成功");
+    }
+
+    @GetMapping("/list")
+    public R<List<DishDto>> list(Dish dish){
+        log.info("list"+dish);
+        LambdaQueryWrapper<Dish> wrapper=new LambdaQueryWrapper<>();
+        if (dish!=null){
+            wrapper.eq(Dish::getCategoryId,dish.getCategoryId());
+        }
+        wrapper.eq(Dish::getStatus,1);
+        wrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+        List<Dish> list = dishService.list(wrapper);
+        List<DishDto> dtoList=new ArrayList<>();
+        for (Dish now:list){
+            DishDto dto=new DishDto();
+            BeanUtils.copyProperties(now,dto);
+            Long id = now.getCategoryId();
+            Category category = categoryService.getById(id);
+            dto.setCategoryName(category.getName());
+            LambdaQueryWrapper<DishFlavor> dishFlavorWrapper=new LambdaQueryWrapper<>();
+            dishFlavorWrapper.eq(DishFlavor::getDishId,dto.getId());
+            dto.setFlavors(dishFlavorService.list(dishFlavorWrapper));
+            dtoList.add(dto);
+        }
+        return R.success(dtoList);
     }
 }
